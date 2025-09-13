@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router'
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, FontAwesome, Feather } from '@expo/vector-icons'
 
 export default function TabLayout() {
   return (
@@ -11,18 +11,18 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'Learn',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
+            <FontAwesome name="book" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="learn"
+        name="practice"
         options={{
-          title: 'Learn',
+          title: 'Practice',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="book" size={size} color={color} />
+            <Feather name="target" size={size} color={color} />
           ),
         }}
       />
