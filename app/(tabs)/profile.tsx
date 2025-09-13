@@ -28,7 +28,7 @@ export default function ProfileScreen() {
       console.error('Firebase connection error:', error)
       Alert.alert(
         'Firebase Error ❌', 
-        `Connection failed: ${error.message}`
+        `Connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`
       )
     }
   }
