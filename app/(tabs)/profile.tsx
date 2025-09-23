@@ -1,78 +1,48 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import { db } from '../../lib/firebase'
-import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { View, Text, TouchableOpacity, Alert } from 'react-native'
+import { useAuth } from '../../lib/auth'
+import { useAppStore } from '../../store/useAppStore'
 
 export default function ProfileScreen() {
-  const testFirebaseConnection = async () => {
-    try {
-      console.log('Testing Firebase connection...')
-      
-      // Test writing to Firestore
-      const docRef = await addDoc(collection(db, 'test'), {
-        message: 'Hello from SportyProfessor!',
-        timestamp: new Date()
-      })
-      
-      console.log('Document written with ID: ', docRef.id)
-      
-      // Test reading from Firestore
-      const querySnapshot = await getDocs(collection(db, 'test'))
-      console.log('Documents in test collection:', querySnapshot.size)
-      
-      Alert.alert(
-        'Firebase Connected! ✅', 
-        `Successfully wrote and read data. Document ID: ${docRef.id}`
-      )
-      
-    } catch (error) {
-      console.error('Firebase connection error:', error)
-      Alert.alert(
-        'Firebase Error ❌', 
-        `Connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`
-      )
-    }
+  const { logout, user: authUser } = useAuth()
+  const { user: storeUser } = useAppStore()
+
+  const handleLogout = async () => {
+    Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Sign Out', 
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await logout()
+            } catch (error) {
+              Alert.alert('Error', 'Failed to sign out')
+            }
+          }
+        }
+      ]
+    )
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
-      <Text style={styles.subtitle}>Your SportyProfessor profile</Text>
+    <View className="flex-1 justify-center items-center bg-white px-6">
+      <Text className="text-2xl font-bold text-gray-800 mb-4">
+        {storeUser?.displayName || 'Student'}
+      </Text>
       
-      <TouchableOpacity style={styles.testButton} onPress={testFirebaseConnection}>
-        <Text style={styles.buttonText}>Test Firebase Connection</Text>
+      <Text className="text-base text-gray-600 mb-8">
+        {authUser?.email || 'No email'}
+      </Text>
+      
+      <TouchableOpacity 
+        className="bg-red-500 py-4 px-8 rounded-xl"
+        onPress={handleLogout}
+      >
+        <Text className="text-white text-lg font-bold">Sign Out</Text>
       </TouchableOpacity>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    color: '#666',
-    marginBottom: 30,
-  },
-  testButton: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-})

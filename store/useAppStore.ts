@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 interface User {
   id: string
-  email?: string
+  email?: string | null  // Changed this line
   displayName?: string
   currentStreak: number
   totalPoints: number

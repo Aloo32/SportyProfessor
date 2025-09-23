@@ -1,21 +1,15 @@
-import { Text, View } from "react-native";
- 
+import { View, Text } from 'react-native'
+
 export default function HomeScreen() {
   return (
-    <View className="flex-1 items-center justify-center bg-red-500">
-      <View className="bg-white p-6 rounded-xl shadow-lg">
-        <Text className="text-3xl font-bold text-blue-600 mb-4">
-          SportyProfessor
-        </Text>
-        <Text className="text-lg text-gray-700 text-center">
-          Nativewind is connected!!
-        </Text>
-        <View className="bg-green-500 p-3 rounded-lg mt-4">
-          <Text className="text-white font-semibold text-center">
-            Green Button
-          </Text>
-        </View>
-      </View>
+    <View className="flex-1 justify-center items-center bg-white p-5">
+      <Text className="text-3xl font-bold text-slate-800 mb-3">
+        SportyProfessor
+      </Text>
+      <Text className="text-5xl mb-5">🏀</Text>
+      <Text className="text-base text-center text-gray-600">
+        Welcome to your sports learning journey!
+      </Text>
     </View>
-  );
+  )
 }
